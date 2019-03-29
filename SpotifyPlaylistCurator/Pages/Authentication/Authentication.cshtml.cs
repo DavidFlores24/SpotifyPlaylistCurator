@@ -21,17 +21,17 @@ namespace SpotifyPlaylistCurator.Pages.Authentication
 
         public async Task OnGetAsync()
         {
-            if (AuthenticationObject == null)
-            {
-                AuthenticationObject = new Models.AuthenticationObject();
-                _context.Add(AuthenticationObject);
-            }
-
             if(!string.IsNullOrEmpty(code))
             {
+                if (AuthenticationObject == null)
+                {
+                    AuthenticationObject = new Models.AuthenticationObject();
+                    _context.Add(AuthenticationObject);
+                }
                 AuthenticationObject = SpotifyAuthentication.ExchangeCodeForToken(AuthenticationObject, code);
                 _context.Update(AuthenticationObject);
                 await _context.SaveChangesAsync();
+                GoToPlaylist();
             }
         }
 
@@ -40,6 +40,12 @@ namespace SpotifyPlaylistCurator.Pages.Authentication
             var authTokenUrl = SpotifyAuthentication.GetAuthenticationTokenURL();
             Response.Redirect(authTokenUrl);
         }
+
+        private void GoToPlaylist()
+        {
+            RedirectToPage("../PlaylistRequest/Create");
+        }
+
         [BindProperty(SupportsGet = true)]
         public string code { get; set; }
 
