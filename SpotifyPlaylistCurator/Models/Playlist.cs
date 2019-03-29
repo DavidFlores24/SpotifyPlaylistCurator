@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SpotifyPlaylistCurator.Models
 {
@@ -7,8 +9,9 @@ namespace SpotifyPlaylistCurator.Models
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public IEnumerable Songs { get; set; }
-        public IEnumerable Genres { get; set; }
+
+        public IEnumerable<PlaylistSong> PlaylistSongs { get; set; }
+        public IEnumerable<Genre> Genres { get; set; }
 
         public Playlist()
         {

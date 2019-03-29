@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SpotifyPlaylistCurator.Models
 {
@@ -8,7 +9,8 @@ namespace SpotifyPlaylistCurator.Models
         public string Id { get; set; }
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
-        public IEnumerable<string> Scopes { get; set; }
+        [NotMapped]
+        public ICollection<string> Scopes { get; set; }
 
         public AuthenticationObject()
         {
