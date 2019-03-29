@@ -8,23 +8,29 @@ using SpotifyPlaylistCurator.Models;
 namespace SpotifyPlaylistCurator.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190329111036_Initial")]
-    partial class Initial
+    [Migration("20190329182527_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024");
+                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085");
 
             modelBuilder.Entity("SpotifyPlaylistCurator.Models.AuthenticationObject", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("AccessToken");
+                    b.Property<string>("access_token");
 
-                    b.Property<string>("RefreshToken");
+                    b.Property<int>("expires_in");
+
+                    b.Property<string>("refresh_token");
+
+                    b.Property<string>("scope");
+
+                    b.Property<string>("token_type");
 
                     b.HasKey("Id");
 

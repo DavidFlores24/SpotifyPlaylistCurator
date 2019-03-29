@@ -13,16 +13,22 @@ namespace SpotifyPlaylistCurator.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024");
+                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085");
 
             modelBuilder.Entity("SpotifyPlaylistCurator.Models.AuthenticationObject", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("AccessToken");
+                    b.Property<string>("access_token");
 
-                    b.Property<string>("RefreshToken");
+                    b.Property<int>("expires_in");
+
+                    b.Property<string>("refresh_token");
+
+                    b.Property<string>("scope");
+
+                    b.Property<string>("token_type");
 
                     b.HasKey("Id");
 

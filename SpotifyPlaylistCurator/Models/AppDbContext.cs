@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
+using static Microsoft.EntityFrameworkCore.Design.OperationExecutor;
 
 namespace SpotifyPlaylistCurator.Models
 {
@@ -8,6 +10,7 @@ namespace SpotifyPlaylistCurator.Models
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
+
         }
 
         public DbSet<Genre> Genres { get; set; }

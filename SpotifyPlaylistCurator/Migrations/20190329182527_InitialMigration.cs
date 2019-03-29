@@ -2,7 +2,7 @@
 
 namespace SpotifyPlaylistCurator.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,8 +11,11 @@ namespace SpotifyPlaylistCurator.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    AccessToken = table.Column<string>(nullable: true),
-                    RefreshToken = table.Column<string>(nullable: true)
+                    access_token = table.Column<string>(nullable: true),
+                    refresh_token = table.Column<string>(nullable: true),
+                    token_type = table.Column<string>(nullable: true),
+                    scope = table.Column<string>(nullable: true),
+                    expires_in = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

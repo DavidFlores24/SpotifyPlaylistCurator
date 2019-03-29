@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using SpotifyPlaylistCurator.Models;
-using SpotifyAPI.Web.Models;
-using SpotifyAPI.Web.Enums;
-using SpotifyAPI.Web.Auth;
+using Newtonsoft.Json;
 
 namespace SpotifyPlaylistCurator
 {
@@ -13,56 +16,54 @@ namespace SpotifyPlaylistCurator
     {
         private static readonly string ClientId = "c53dddffc9054b819be83e2a53a9c148";
         private static readonly string ClientSecret = "285cd151d5244adc89c0d55bc702bf67";
-        private static readonly string ReturnURL = "";
+        private static readonly string ReturnURL = "https://localhost:5001/Authentication/Authentication";
 
-        public static void AuthenticateUser()
+        internal static AuthenticationObject ExchangeCodeForToken(AuthenticationObject authenticationObject, string code)
         {
-            var authObject = new ClientCredentialsAuth
-            {
-                ClientSecret = ClientSecret,
-                ClientId = ClientId,
-                Scope = Scope.PlaylistReadPrivate
-            };
+            var responseString = "";
 
-            authObject.DoAuth();
+            if(code.Length > 0)
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    string bearer = Convert.ToBase64String(Encoding.ASCII.GetBytes(ClientId + ":" + ClientSecret));
+
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", bearer);
+
+                    FormUrlEncodedContent formContent = new FormUrlEncodedContent(new[]
+                    {
+                        new KeyValuePair<string ,string>("code", code),
+                        new KeyValuePair<string ,string>("redirect_uri", ReturnURL),
+                        new KeyValuePair<string ,string>("grant_type", "authorization_code")
+                    });
+
+                    var response = client.PostAsync("https://accounts.spotify.com/api/token", formContent).Result;
+                    var responseContent = response.Content;
+
+                    responseString = response.Content.ReadAsStringAsync().Result;
+
+                    authenticationObject = JsonConvert.DeserializeObject<AuthenticationObject>(responseString);
+               }
+            }
+            return authenticationObject;
         }
 
-        //public static string BuildAuthenticationURL(AuthenticationObject authObject)
-        //{
-        //    var encodedScopes = string.Join(" ", authObject.Scopes);
-        //    return $"https://accounts.spotify.com/authorize?response_type=code&client_id={ClientId}&scope={encodedScopes}&redirect_uri={ReturnURL}";
-        //}
 
-        public static void Authenticate()
+        public static string GetAuthenticationTokenURL()
         {
-            //var requestTokenUrl = $"https://accounts.spotify.com/api/token";
-            //var encodedAuth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{ClientId}:{ClientSecret}");
+            var qb = new QueryBuilder();
+            qb.Add("response_type", "code");
+            qb.Add("client_id", ClientId);
+            //qb.Add
+            qb.Add("scope", new List<string>
+            {
+                "playlist-read-private",
+                "user-library-read",
+                "playlist-modify-public"
+            });
+            qb.Add("redirect_uri", ReturnURL);
 
-            //var webRequest = (HttpWebRequest)WebRequest.Create(requestTokenUrl);
-
-            //webRequest.Method = "POST";
-            //webRequest.ContentType = "application/x-www-form-urlencoded";
-            //webRequest.Accept = "application/json";
-            //webRequest.Headers.Add("Authorization: Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(encodedAuth)));
-
-            //var request = "grant_type=client_credentials";
-            //var requestBytes = Encoding.ASCII.GetBytes(request);
-            //webRequest.ContentLength = requestBytes.Length;
-
-            //var stream = webRequest.GetRequestStream();
-            //stream.Write(requestBytes, 0, requestBytes.Length);
-            //stream.Close();
-
-            //var response = (HttpWebResponse)webRequest.GetResponse();
-            //var json = "";
-
-            //using (var responseStream = response.GetResponseStream())
-            //{
-            //    using (var reader = new StreamReader(responseStream, Encoding.UTF8))
-            //    {
-
-            //    }
-            //}
+            return $"https://accounts.spotify.com/authorize/{qb.ToQueryString().ToString()}";
         }
     }
 }
