@@ -54,13 +54,12 @@ namespace SpotifyPlaylistCurator
             var qb = new QueryBuilder();
             qb.Add("response_type", "code");
             qb.Add("client_id", ClientId);
-            //qb.Add
-            qb.Add("scope", new List<string>
+            qb.Add("scope", string.Join(" ", new List<string>
             {
-                "playlist-read-private",
+                "playlist-modify-public",
                 "user-library-read",
                 "playlist-modify-public"
-            });
+            }));
             qb.Add("redirect_uri", ReturnURL);
 
             return $"https://accounts.spotify.com/authorize/{qb.ToQueryString().ToString()}";
