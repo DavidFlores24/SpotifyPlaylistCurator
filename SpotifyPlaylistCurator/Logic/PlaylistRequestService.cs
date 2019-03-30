@@ -118,19 +118,13 @@ namespace SpotifyPlaylistCurator
             var maxNumberOfTries = 50;
             var numberOfTries = 0;
 
-            while (coveredDuration < request.Duration * 60000 && numberOfTries < maxNumberOfTries)
+            while (coveredDuration < request.Duration * 60000 - 10000 && numberOfTries < maxNumberOfTries)
             {
                 foreach (var playlistToLook in request.PlaylistsToLook)
                 {
                     var tracks = GetPlaylistTracks(authObj, playlistToLook).Select(x => x.track).ToList();
-                    var tmp = tracks
-                                .Except(tracksForPlaylist)
-                                .Except(avoidableTracks)
-                                .OrderByDescending(x => x.popularity);
 
                     var trackToAdd = tracks
-                                .Except(tracksForPlaylist)
-                                .Except(avoidableTracks)
                                 .OrderByDescending(x => x.popularity)
                                 .First();
 
@@ -139,6 +133,14 @@ namespace SpotifyPlaylistCurator
                         numberOfTries++;
                         continue;
                     }
+                    if(tracksForPlaylist.Select(x => x.id).ToList().Contains(trackToAdd.id) 
+                        || avoidableTracks.Select(x => x.id).ToList().Contains(trackToAdd.id))
+                    {
+                        var random = new Random();
+                        var index = random.Next(2, tracks.Count());
+                        trackToAdd = tracks.ElementAt(index);
+                    }
+
                     if (coveredDuration + trackToAdd.duration_ms > request.Duration * 60000 + overshootLimit)
                     {
                         avoidableTracks.Add(trackToAdd);
