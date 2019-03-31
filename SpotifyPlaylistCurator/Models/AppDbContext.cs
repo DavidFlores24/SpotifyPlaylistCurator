@@ -13,9 +13,6 @@ namespace SpotifyPlaylistCurator.Models
 
         }
 
-        public DbSet<Genre> Genres { get; set; }
-        public DbSet<Song> Songs { get; set; }
-        public DbSet<Playlist> Playlists { get; set; }
         public DbSet<PlaylistRequest> PlaylistRequests { get; set; }
         public DbSet<AuthenticationObject> AuthenticationObjects { get; set; }
     }

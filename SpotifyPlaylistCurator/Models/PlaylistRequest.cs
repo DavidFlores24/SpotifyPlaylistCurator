@@ -9,11 +9,9 @@ namespace SpotifyPlaylistCurator.Models
     {
         [Key]
         public int Id { get; set; }
+        [Display(Name = "Duration (in minutes)")]
         public int Duration { get; set; }
         public string Name { get; set; }
-
-        [NotMapped]
-        public IEnumerable<Genre> Genres { get; set; }
 
         [NotMapped]
         [Display(Name = "Playlists to Look")]
