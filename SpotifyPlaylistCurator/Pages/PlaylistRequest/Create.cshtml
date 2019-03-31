@@ -17,19 +17,14 @@
     <div class="form-group">
         <label asp-for="PlaylistRequest.PlaylistsToLook" class="control-label"></label>
         @{
-        int cnt = 0;
             foreach (var playlist in Model.PlaylistsToLook)
             {
-                if (cnt++ % 3 == 0)
-                {
-                    @:</tr><tr>
-                }
-                @:<td>
+                @:<div class="row">
                     <input type="checkbox"
                            name="playlistsToLook"
                            value="@playlist.id" />
                             @playlist.name
-                @:</td>
+                @:</div>
             }
         }
       </div>

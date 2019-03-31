@@ -18,10 +18,10 @@ namespace SpotifyPlaylistCurator
         private static readonly string ClientSecret = "285cd151d5244adc89c0d55bc702bf67";
         private static readonly string ReturnURL = "https://localhost:5001/Authentication/Authentication";
 
-        internal static AuthenticationObject ExchangeCodeForToken(AuthenticationObject authenticationObject, string code)
+        internal static void ExchangeCodeForToken(string code, AppDbContext context)
         {
             var responseString = "";
-
+            var authenticationObject = new AuthenticationObject();
             if(code.Length > 0)
             {
                 using (HttpClient client = new HttpClient())
@@ -43,9 +43,11 @@ namespace SpotifyPlaylistCurator
                     responseString = response.Content.ReadAsStringAsync().Result;
 
                     authenticationObject = JsonConvert.DeserializeObject<AuthenticationObject>(responseString);
+                    context.Add(authenticationObject);
                }
+
+                context.SaveChanges();
             }
-            return authenticationObject;
         }
 
 
