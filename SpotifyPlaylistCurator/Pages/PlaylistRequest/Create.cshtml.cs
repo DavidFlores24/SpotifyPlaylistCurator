@@ -21,6 +21,7 @@ namespace SpotifyPlaylistCurator.Pages.PlaylistRequest
         public void OnGet()
         {
             PlaylistsToLook = PlaylistRequestService.GetUserPlaylists(_context);
+            Images = PlaylistRequestService.GetImagesForCarousel(_context, PlaylistsToLook).ToList();
         }
 
         public IActionResult OnPost(string[] playlistsToLook)
@@ -47,5 +48,7 @@ namespace SpotifyPlaylistCurator.Pages.PlaylistRequest
         
         [BindProperty]
         public Models.PlaylistRequest PlaylistRequest { get; set; }
+
+        public List<SpotifyImage> Images { get; set; }
     }
 }

@@ -171,5 +171,26 @@ namespace SpotifyPlaylistCurator
             }
             return playlistTracks;
         }
+
+        public static IEnumerable<SpotifyImage> GetImagesForCarousel(AppDbContext context, List<SpotifyPlaylist> playlists)
+        {
+            var authObj = context.AuthenticationObjects.FirstOrDefault();
+            var images = new List<SpotifyImage>();
+            foreach(var playlist in playlists)
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", authObj.access_token);
+
+                    var response = client.GetAsync($"https://api.spotify.com/v1/playlists/{playlist.id}/images").Result;
+                    var responseContent = response.Content.ReadAsStringAsync().Result;
+
+                    var jobj = JArray.Parse(responseContent);
+                    var playlistImages = JsonConvert.DeserializeObject<List<SpotifyImage>>(responseContent);
+                    images.Add(playlistImages.First());
+                }
+            }
+            return images;
+        }
     }
 }

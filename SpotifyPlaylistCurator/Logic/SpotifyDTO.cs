@@ -33,4 +33,9 @@ namespace SpotifyPlaylistCurator
         public int popularity { get; set; }
         public string uri { get; set; }
     }
+
+    public class SpotifyImage
+    {
+        public string url { get; set; }
+    }
 }

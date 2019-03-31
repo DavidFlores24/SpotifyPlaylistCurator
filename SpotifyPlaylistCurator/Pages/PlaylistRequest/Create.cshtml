@@ -5,29 +5,53 @@
 }
 
 <h2>Create a Playlist</h2>
-<form method="POST">
-    <div class="form-group">
-        <label asp-for="PlaylistRequest.Name" class="control-label"></label>
-        <input asp-for="PlaylistRequest.Name" class="form-control" />
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <form method="POST">
+                <div class="form-group">
+                    <label asp-for="PlaylistRequest.Name" class="control-label"></label>
+                    <input asp-for="PlaylistRequest.Name" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="PlaylistRequest.Duration" class="control-label"></label>
+                    <input asp-for="PlaylistRequest.Duration" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="PlaylistRequest.PlaylistsToLook" class="control-label"></label>
+                    @{
+                        foreach (var playlist in Model.PlaylistsToLook)
+                        {
+                            @:<div class="row">
+                                <input type="checkbox"
+                                       name="playlistsToLook"
+                                       value="@playlist.id" />
+                                @playlist.name
+                            @:</div>
+                        }
+                    }
+                </div>
+                <div></div>
+                <input type="submit" name="Create a Playlist" class="btn btn-default" value="Create my playlist" />
+            </form>
+        </div>
+        <div class="col-md-6">
+            <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="2500">
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <img src="@Model.Images.First().url" class="img-responsive" />
+                    </div>
+                    @{
+                        foreach (var image in Model.Images.Skip(1))
+                        {
+                            @:<div class="item">
+                                <img src="@image.url" class="img-responsive" />
+                            @:</div>
+
+                        }
+                    }
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label asp-for="PlaylistRequest.Duration" class="control-label"></label>
-        <input asp-for="PlaylistRequest.Duration" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="PlaylistRequest.PlaylistsToLook" class="control-label"></label>
-        @{
-            foreach (var playlist in Model.PlaylistsToLook)
-            {
-                @:<div class="row">
-                    <input type="checkbox"
-                           name="playlistsToLook"
-                           value="@playlist.id" />
-                            @playlist.name
-                @:</div>
-            }
-        }
-      </div>
-    <div></div>
-    <input type="submit" name="Create a Playlist" class="btn btn-default" value="Create my playlist"/>
-</form>
+</div>
