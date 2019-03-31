@@ -52,14 +52,19 @@ footer {
     color: #fff;
     border-radius:20px;
 }
-    .btn-default:hover {
-        width: 25%;
-        margin-top: 2%;
-        background-color: #212121;
-        border-color: #121212;
-        color: #1ed760;
-        border-radius: 20px;
-    }
+.btn-default:hover {
+    width: 25%;
+    margin-top: 2%;
+    background-color: #212121;
+    border-color: #121212;
+    color: #1ed760;
+    border-radius: 20px;
+}
+
+.playlist-create .carousel-inner{
+    max-width: 300px;
+    left:20%;
+}
 
 /* QR code generator */
 #qrCode {
