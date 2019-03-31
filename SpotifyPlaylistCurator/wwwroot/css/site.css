@@ -3,6 +3,15 @@ for details on configuring this project to bundle and minify static web assets. 
 body {
     padding-top: 50px;
     padding-bottom: 20px;
+    background-color: #191414;
+    color: #fff;
+}
+
+footer {
+    padding-left: 5%;
+    position: fixed;
+    bottom: 0;
+    color: #535353;
 }
 
 /* Wrapping element */
@@ -22,6 +31,35 @@ body {
 .carousel-inner .item img[src$=".svg"] {
     width: 100%;
 }
+
+.home-page {
+    color:#fff;
+}
+
+.home-page h2 {
+    text-align:center;
+}
+
+.home-page h3 {
+    text-align: center;
+}
+
+.btn-default {
+    width: 25%;
+    margin-top: 2%;
+    background-color: #1ed760;
+    border-color: #1db954;
+    color: #fff;
+    border-radius:20px;
+}
+    .btn-default:hover {
+        width: 25%;
+        margin-top: 2%;
+        background-color: #212121;
+        border-color: #121212;
+        color: #1ed760;
+        border-radius: 20px;
+    }
 
 /* QR code generator */
 #qrCode {
