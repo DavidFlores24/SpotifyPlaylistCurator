@@ -21,6 +21,9 @@ namespace SpotifyPlaylistCurator.Pages.Authentication
         {
             AuthenticationObject = _context.AuthenticationObjects.FirstOrDefault();
 
+            if (AuthenticationObject != null)
+                return RedirectToPage("../PlaylistRequest/Create");
+
             if (!string.IsNullOrEmpty(code))
             {
                 if (AuthenticationObject == null)

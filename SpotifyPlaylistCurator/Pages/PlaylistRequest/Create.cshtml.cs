@@ -23,7 +23,7 @@ namespace SpotifyPlaylistCurator.Pages.PlaylistRequest
             PlaylistsToLook = PlaylistRequestService.GetUserPlaylists(_context);
         }
 
-        public void OnPost(string[] playlistsToLook)
+        public IActionResult OnPost(string[] playlistsToLook)
         {
             if(PlaylistsToLook == null || PlaylistsToLook.Count == 0)
                 PlaylistsToLook = PlaylistRequestService.GetUserPlaylists(_context);
@@ -38,6 +38,8 @@ namespace SpotifyPlaylistCurator.Pages.PlaylistRequest
             _context.PlaylistRequests.Add(PlaylistRequest);
 
             PlaylistRequestService.ProcessPlaylistRequest(PlaylistRequest, _context);
+
+            return RedirectToPage("./Confirmation");
         }
 
         [BindProperty]
